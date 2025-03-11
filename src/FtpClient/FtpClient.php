@@ -749,10 +749,14 @@ class FtpClient implements Countable
         if (strpos($directory, " ") > 0) {
             $ftproot = $this->ftp->pwd();
             $this->ftp->chdir($directory);
-            $list  = $this->ftp->rawlist("");
+            $list = $this->ftp->rawlist("");
             $this->ftp->chdir($ftproot);
         } else {
-            $list  = $this->ftp->rawlist($directory);
+            $list = $this->ftp->rawlist($directory);
+        }
+		
+        if ($list === false) {
+            throw new FtpException('Unable to list directory');
         }
 
         $items = array();
